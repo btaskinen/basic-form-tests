@@ -51,19 +51,24 @@ test.describe('Basic Form tests', () => {
     await expect(firstNameInput).not.toContainClass('is-invalid');
     await expect(lastNameInput).not.toContainClass('is-invalid');
     await expect(emailInput).not.toContainClass('is-invalid');
-    await expect(page.getByText('/is required/')).not.toBeVisible();
+    await expect(page.getByText(/is required/)).not.toBeVisible();
   })
 
 
   test('Submission fails when required fields are empty', async({ page }) => {
-    const { submitButton } = await getFormElements(page);
+    const { firstNameInput, lastNameInput, emailInput, submitButton } = await getFormElements(page);
 
     await submitButton.click();
 
     await expect(page.getByRole('alert')).toBeVisible();
-    await expect.soft(page.getByRole('alert')).not.toHaveText('Submission Complete.');
+    await expect.soft(page.getByRole('alert')).toHaveText('Submission Failed.');
     await expect(page.locator('.help-block')).toBeVisible();
-    await expect.soft(page.locator('.help-block')).not.toHaveText('Submission Complete');
+    await expect.soft(page.locator('.help-block')).toHaveText('Submission Failed');
+    await expect(firstNameInput).toContainClass('is-invalid');
+    await expect(lastNameInput).toContainClass('is-invalid');
+    await expect(emailInput).toContainClass('is-invalid');
+    // assumtion is that empty input fields would disply error text 'X is required'
+    await expect(page.getByText(/is required/)).toHaveCount(3);
   })
 
   test('Invalid email address is rejected', async({ page }) => {
