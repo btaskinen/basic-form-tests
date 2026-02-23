@@ -75,8 +75,11 @@ test.describe('Basic Form tests', () => {
     await firstNameInput.fill(firstName);
     await lastNameInput.fill(lastName);
     await emailInput.fill('jane.doeemail.com');
-    await expect(submitButton).toBeDisabled();
+    await submitButton.click();
     await expect(emailInput).toContainClass('is-invalid');
     await expect(page.getByText('Email must be a valid email.')).toBeVisible();
+    await expect(page.getByRole('alert')).not.toBeVisible();
+    await expect(page.locator('.help-block')).toBeVisible();
+    await expect(page.locator('.help-block')).toHaveText('Please check the form and correct all errors before submitting.');
   })
 })
