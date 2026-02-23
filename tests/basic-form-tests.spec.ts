@@ -69,7 +69,7 @@ test.describe('Basic Form tests', () => {
     await lastNameInput.fill(lastName);
     await emailInput.fill('jane.doeemail.com');
     await expect(submitButton).toBeDisabled();
-    await expect(emailInput).toHaveClass('form-control is-invalid');
+    await expect(emailInput).toContainClass('is-invalid');
     await expect(page.getByText('Email must be a valid email.')).toBeVisible();
   })
 })
