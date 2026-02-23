@@ -48,6 +48,10 @@ test.describe('Basic Form tests', () => {
     await expect(page.getByRole('alert')).toHaveText('Submission Complete.');
     await expect(page.locator('.help-block')).toBeVisible();
     await expect(page.locator('.help-block')).toHaveText('Submission Complete');
+    await expect(firstNameInput).not.toContainClass('is-invalid');
+    await expect(lastNameInput).not.toContainClass('is-invalid');
+    await expect(emailInput).not.toContainClass('is-invalid');
+    await expect(page.getByText('/is required/')).not.toBeVisible();
   })
 
 
