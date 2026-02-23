@@ -56,10 +56,21 @@ test.describe('Basic Form tests', () => {
     await lastNameInput.clear();
     await emailInput.clear();
     await submitButton.click();
-    
+
     await expect(page.getByRole('alert')).toBeVisible();
     await expect.soft(page.getByRole('alert')).not.toHaveText('Submission Complete.');
     await expect(page.locator('.help-block')).toBeVisible();
     await expect.soft(page.locator('.help-block')).not.toHaveText('Submission Complete');
+  })
+
+  test('Invalid email address is rejected', async({ page }) => {
+    const { firstNameInput, lastNameInput, emailInput, submitButton } = await getFormElements(page);
+
+    await firstNameInput.fill(firstName);
+    await lastNameInput.fill(lastName);
+    await emailInput.fill('jane.doeemail.com');
+    await expect(submitButton).toBeDisabled();
+    await expect(emailInput).toHaveClass('form-control is-invalid');
+    await expect(page.getByText('Email must be a valid email.')).toBeVisible();
   })
 })
