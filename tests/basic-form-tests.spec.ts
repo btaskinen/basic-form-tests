@@ -19,19 +19,21 @@ const getFormElements = async(page: Page):Promise<FormElements> => {
     submitButton : page.getByRole('button', { name: 'Submit'}),
   }
 
-  await expect(elements.firstNameInput).toBeVisible();
-  await expect(elements.lastNameInput).toBeVisible();
-  await expect(elements.emailInput).toBeVisible();
-  await expect(elements.submitButton).toBeVisible();
-
   return elements
-
 }
 
 test.describe('Basic Form tests', () => {
   test.beforeEach('Navigate to url', async ({ page}) => {
     await page.goto('https://formio.github.io/angular-demo/#/');
     await expect(page.getByText('Example Form')).toBeVisible();
+
+    const { firstNameInput, lastNameInput, emailInput, submitButton } = await getFormElements(page);
+
+    await expect(firstNameInput).toBeVisible();
+    await expect(lastNameInput).toBeVisible();
+    await expect(emailInput).toBeVisible();
+    await expect(submitButton).toBeVisible();
+
   })
 
   test('Successful submission with all required fields filled', async({ page }) => {
