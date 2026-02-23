@@ -31,6 +31,29 @@ test.describe('Basic Form tests', () => {
     await expect(page.getByRole('alert')).toHaveText('Submission Complete.');
     await expect(page.locator('.help-block')).toBeVisible();
     await expect(page.locator('.help-block')).toHaveText('Submission Complete');
+  })
 
+
+  test('Submission fails when required fields are empty', async({ page }) => {
+    const firstNameInput = page.getByLabel('First Name');
+    const lastNameInput = page.getByLabel('Last Name');
+    const emailInput = page.getByLabel('Email');
+    const submitButton = page.getByRole('button', { name: 'Submit'});
+
+    await expect(firstNameInput).toBeVisible();
+    await firstNameInput.clear();
+
+    await expect(lastNameInput).toBeVisible();
+    await lastNameInput.clear();
+
+    await expect(emailInput).toBeVisible();
+    await emailInput.clear();
+
+    await expect(submitButton).toBeVisible();
+    await submitButton.click();
+    await expect(page.getByRole('alert')).toBeVisible();
+    await expect.soft(page.getByRole('alert')).not.toHaveText('Submission Complete.');
+    await expect(page.locator('.help-block')).toBeVisible();
+    await expect.soft(page.locator('.help-block')).not.toHaveText('Submission Complete');
   })
 })
