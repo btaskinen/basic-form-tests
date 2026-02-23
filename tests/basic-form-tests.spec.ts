@@ -52,11 +52,8 @@ test.describe('Basic Form tests', () => {
 
 
   test('Submission fails when required fields are empty', async({ page }) => {
-    const { firstNameInput, lastNameInput, emailInput, submitButton } = await getFormElements(page);
+    const { submitButton } = await getFormElements(page);
 
-    await firstNameInput.clear();
-    await lastNameInput.clear();
-    await emailInput.clear();
     await submitButton.click();
 
     await expect(page.getByRole('alert')).toBeVisible();
